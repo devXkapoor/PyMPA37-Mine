@@ -1,0 +1,96 @@
+language: C
+
+
+matrix:
+  include:
+    - os: linux
+      env: PYTHON_VERSION=3.5
+    - os: linux
+      env: PYTHON_VERSION=3.6
+    - os: linux
+      env: PYTHON_VERSION=3.7
+    - os: linux
+      env: PYTHON_VERSION=3.8
+    - os: osx
+      env: PYTHON_VERSION=3.5
+    - os: osx
+      env: PYTHON_VERSION=3.6
+    - os: osx
+      env: PYTHON_VERSION=3.7
+    - os: osx
+      env: PYTHON_VERSION=3.8
+
+
+sudo: true 
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      export OS="MacOSX";
+      export py=$PYTHON_VERSION;
+    else
+      export OS="Linux";
+      export py=$PYTHON_VERSION;
+    fi
+  - if [[ "$py" == "2.7_with_system_site_packages" ]]; then
+      export py="2.7";
+    fi
+  - if [[ "${py:0:1}" == '2' ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-${OS}-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda config --add channels conda-forge
+  - conda update -q conda
+  - conda info -a
+  - |
+      if [[ "${py:0:1}" == "3" ]]; then
+        PYFLAKES="pyflakes=1.0.0"
+      else
+        PYFLAKES="pyflakes=0.9.0"
+      fi
+  
+  - echo $PYTHON_VERSION
+  - travis_wait conda create -q -n test-environment python=$PYTHON_VERSION colorama numpy scipy matplotlib obspy pandas flake8 mock coverage bottleneck pyproj
+  - source activate test-environment
+  - travis_wait pip install pep8-naming pytest pytest-cov pytest-pep8 pytest-xdist coverage codecov Cython
+  - pip freeze
+  - conda list
+  # done installing dependencies
+  - git version
+  - git clone https://github.com/avuan/PyMPA37
+
+before_script:
+  - chmod +x ./*.dir/*.py
+  - flake8 ./*.dir/*.py  --count --exit-zero --statistics
+
+script:
+   - cd ./input.download_data.dir
+   - ./download_data.py
+   - ./download_inventory.py
+   - cd ../input.create_templates.dir
+   - ./create_templates.py
+   - cd ../input.calculate_ttimes.dir
+   - ./calculate_ttimes.py
+   - cd ../main.pympa.dir
+   - ./pympa.py 
+   - cd ../output.process_detections.dir
+   - ./process_detections.py
+   - cd ../output.verify_detection.dir
+   - ./verify_detection.py
+   
+after_success:
+  # Check how much code is actually tested and send this report to codecov
+  #- mv .coverage ../.coverage.empty
+  #- cd ..
+  #- coverage combine
+
+notifications:
+  email:
+    recipients:
+      - avuan@inogs.it
+    on_success: never # default: change
+    on_failure: always # default: always
