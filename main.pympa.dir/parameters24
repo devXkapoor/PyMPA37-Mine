@@ -21,23 +21,23 @@
 # line 20 = multiplying factor to remove daily cft channels with std smaller than (average std from all channels * factor at at line 20)
 # line 21 = maximum number of templates to be used in template matching (choice is made preferring the closest channels)
 # line 22 = number of chunks per day (1=86400s, 2=43200, 3=28800, 4=21600, 6=14400 etc... icreasing the factor allows reducing memory consumption) 
-APEC ATBU ATCA ATCC ATFO ATLO ATPC ATPI ATSC ATVO BADI FOSV FRON MURB NARO PARC PIEI PE3 SSFR
-EHE EHN EHZ HHE HHN HHZ
-IV
+AQU CAMP CERT FAGN FIAM GUAR INTR MNS NRCA TERO
+BHE BHN BHZ HHE HHN HHZ
+IV MN
 3.0
 8.0
 6
 0.35
-6
+3
 5
 6
 24h
 template
 ttimes
-2010 07 23 1
+2009 03 30 1
 templates.zmap
-200
-204
+0
+27
 8
 1.5
 0.25

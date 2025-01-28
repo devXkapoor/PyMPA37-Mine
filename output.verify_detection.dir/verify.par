@@ -17,8 +17,8 @@
 # Line 17 -- Flag_Save_Fig (0 = show, 1 = save figure)
 # Line 18 -- Flag_Read_Stats (0 = no stats, 1 = read stats) 
 # Line 19 -- Tolerance in time between outcat origin time and stats
-ATBU ATFO ATLO ATMI ATPC ATPI ATSC ATVO BADI CDCA MURB
-EHE EHN EHZ HHE HHN HHZ
+AQU CAMP CERT FAGN FIAM GUAR INTR MNS NRCA TERO
+BHE BHN BHZ HHE HHN HHZ
 IV MN
 3.0
 8.0
@@ -30,9 +30,9 @@ template
 ttimes
 templates.zmap
 0
-5
+27
 10
-ato
+aquila_kato
 1
 1
 0.05
