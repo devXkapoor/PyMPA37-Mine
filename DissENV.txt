@@ -1,0 +1,10 @@
+conda create -n DissENV python = 3.6
+conda activate DissENV
+conda install conda-forge::obspy
+Proceed ([y]/n)? y
+conda install anaconda::numpy
+Proceed ([y]/n)? y
+conda install conda-forge::bottleneck
+Proceed ([y]/n)? y
+conda install anaconda::pandas
+Proceed ([y]/n)? ya
